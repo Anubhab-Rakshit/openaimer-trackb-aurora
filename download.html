@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OpenAimer Space | Emotional Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdcbf",
+                        "on-surface-variant": "#cfc2d7",
+                        "tertiary": "#ffb873",
+                        "on-surface": "#e4dffc",
+                        "outline-variant": "#4c4354",
+                        "on-primary-fixed": "#2c0051",
+                        "surface-container-low": "#1b192e",
+                        "surface-dim": "#131125",
+                        "surface": "#131125",
+                        "surface-container-highest": "#353248",
+                        "on-secondary-fixed-variant": "#622599",
+                        "surface-tint": "#dcb8ff",
+                        "on-tertiary": "#4b2800",
+                        "inverse-surface": "#e4dffc",
+                        "outline": "#988ca0",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-primary-fixed-variant": "#6700b5",
+                        "inverse-on-surface": "#302e44",
+                        "tertiary-fixed-dim": "#ffb873",
+                        "on-secondary": "#4a0080",
+                        "primary-fixed-dim": "#dcb8ff",
+                        "on-primary": "#480081",
+                        "on-error": "#690005",
+                        "primary-fixed": "#efdbff",
+                        "on-secondary-container": "#d1a1ff",
+                        "secondary-container": "#622599",
+                        "error-container": "#93000a",
+                        "primary-container": "#8a2be2",
+                        "on-background": "#e4dffc",
+                        "secondary-fixed": "#f0dbff",
+                        "on-primary-container": "#eed9ff",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#6a3b00",
+                        "secondary": "#ddb7ff",
+                        "surface-container-high": "#2a273d",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "primary": "#dcb8ff",
+                        "inverse-primary": "#8422dc",
+                        "tertiary-container": "#935400",
+                        "on-secondary-fixed": "#2c0050",
+                        "surface-container": "#1f1d32",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#ffdaba",
+                        "surface-bright": "#39374d",
+                        "surface-variant": "#353248",
+                        "surface-container-lowest": "#0e0c20",
+                        "background": "#131125"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel {
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        .ai-message-border {
+            border-left: 3px solid #8a2be2;
+        }
+        .bg-blob {
+            filter: blur(100px);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen relative overflow-hidden flex flex-col">
+<!-- Ambient Background Blobs -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+<div class="bg-blob absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary-container/20 rounded-full"></div>
+<div class="bg-blob absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-secondary-container/20 rounded-full"></div>
+<div class="bg-blob absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-surface-tint/10 rounded-full"></div>
+</div>
+<!-- TopNavBar (Shared Component Execution) -->
+<header class="fixed top-0 w-full z-50 bg-[#131125]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(138,43,226,0.08)]">
+<div class="flex justify-between items-center px-8 h-20 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary font-bold shadow-lg shadow-primary-container/20" data-alt="Violet gradient avatar circle for OpenAimer Space">
+                    OA
+                </div>
+<div class="flex flex-col">
+<span class="text-xl font-semibold bg-gradient-to-r from-[#dcb8ff] to-[#8a2be2] bg-clip-text text-transparent font-['Inter'] tracking-tight">OpenAimer Space</span>
+<span class="text-[10px] text-on-surface-variant tracking-[0.2em] font-medium opacity-70">EMOTIONAL CONTEXT ENGINE</span>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#dcb8ff] font-bold border-b-2 border-[#dcb8ff] pb-1 font-['Inter'] font-light tracking-tight hover:bg-[#353248]/50 transition-all duration-300" href="#">Sanctuary</a>
+<a class="text-[#cfc2d7] font-['Inter'] font-light tracking-tight hover:bg-[#353248]/50 transition-all duration-300" href="#">Journals</a>
+<a class="text-[#cfc2d7] font-['Inter'] font-light tracking-tight hover:bg-[#353248]/50 transition-all duration-300" href="#">Insights</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#353248]/50 transition-all duration-300">
+<span class="material-symbols-outlined text-primary-fixed-dim">search</span>
+</button>
+<button class="p-2 rounded-full hover:bg-[#353248]/50 transition-all duration-300">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-screen w-72 bg-[#1b192e]/90 backdrop-blur-2xl rounded-r-[40px] shadow-2xl shadow-[#8a2be2]/10 flex-col py-10 px-6 space-y-8 z-40 mt-20">
+<div class="space-y-6">
+<div class="flex items-center gap-4 px-2">
+<div class="text-lg font-bold text-[#dcb8ff]">The Observatory</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-3 rounded-xl text-[#dcb8ff] font-semibold border-r-4 border-[#8a2be2] bg-[#353248]/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="spa">spa</span>
+<span>Sanctuary</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-xl text-[#cfc2d7]/60 hover:text-[#dcb8ff] hover:bg-[#353248]/30 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span>Journals</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-xl text-[#cfc2d7]/60 hover:text-[#dcb8ff] hover:bg-[#353248]/30 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>Insights</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-xl text-[#cfc2d7]/60 hover:text-[#dcb8ff] hover:bg-[#353248]/30 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<button class="w-full py-4 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2 scale-98 active:opacity-80 transition-transform">
+<span class="material-symbols-outlined">add_reaction</span>
+                New Reflection
+            </button>
+</div>
+</aside>
+<!-- Main Chat Content -->
+<main class="flex-1 flex flex-col pt-20 pb-8 px-4 lg:pl-80 lg:pr-12 max-w-7xl mx-auto w-full z-10">
+<!-- Chat Vessel -->
+<div class="flex-1 flex flex-col bg-surface-container-low glass-panel rounded-lg shadow-2xl relative overflow-hidden">
+<!-- Chat Messages Area -->
+<div class="flex-1 overflow-y-auto p-6 md:p-10 space-y-8">
+<!-- AI Message 1 -->
+<div class="flex flex-col gap-3 max-w-[85%] md:max-w-[70%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-bold tracking-widest text-primary-fixed-dim uppercase">OpenAimer Space</span>
+</div>
+<div class="bg-surface-container-highest/40 glass-panel p-5 rounded-2xl ai-message-border text-on-surface leading-relaxed">
+                        Welcome to OpenAimer Space. How are you feeling today?
+                    </div>
+<!-- Cognitive Router Insights (Collapsible Tag) -->
+<div class="flex flex-col gap-2 mt-1">
+<details class="group">
+<summary class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary-container/40 text-[10px] font-bold text-secondary cursor-pointer hover:bg-secondary-container/60 transition-all list-none select-none">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+                                Cognitive Router Insights
+                                <span class="material-symbols-outlined text-[14px] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="mt-3 p-4 rounded-2xl bg-surface-container-lowest glass-panel border border-outline-variant/10 text-xs flex flex-col gap-2">
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-on-surface-variant">Emotion</span>
+<span class="text-secondary font-medium">Neutral</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-on-surface-variant">Strategy</span>
+<span class="text-secondary font-medium">Open-ended Inquiry</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Implicit Need</span>
+<span class="text-secondary font-medium">Connection</span>
+</div>
+</div>
+</details>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-3 self-end ml-auto max-w-[85%] md:max-w-[70%]">
+<div class="bg-surface-container-high p-5 rounded-2xl text-on-surface leading-relaxed shadow-sm">
+                        I've been feeling a bit overwhelmed with work lately.
+                    </div>
+</div>
+<!-- AI Message 2 -->
+<div class="flex flex-col gap-3 max-w-[85%] md:max-w-[70%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-bold tracking-widest text-primary-fixed-dim uppercase">OpenAimer Space</span>
+</div>
+<div class="bg-surface-container-highest/40 glass-panel p-5 rounded-2xl ai-message-border text-on-surface leading-relaxed">
+                        I hear you. It sounds like you're carrying a lot of responsibility. Let's break that down.
+                    </div>
+</div>
+</div>
+<!-- Input Bar -->
+<div class="p-6 md:p-10 pt-4">
+<div class="relative max-w-4xl mx-auto">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">sentiment_satisfied</span>
+</div>
+<input class="block w-full pl-14 pr-16 py-4 bg-surface-container-lowest border-none rounded-full text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-primary-container/30 focus:bg-surface-container-high transition-all" placeholder="What's on your mind?" type="text"/>
+<div class="absolute inset-y-1.5 right-1.5 flex items-center">
+<button class="h-full px-6 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold shadow-lg shadow-primary-container/30 flex items-center justify-center transition-all active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<div class="mt-4 flex justify-center gap-6">
+<span class="text-[10px] text-on-surface-variant/40 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">verified_user</span>
+                        Encrypted Connection
+                    </span>
+<span class="text-[10px] text-on-surface-variant/40 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span>
+                        Real-time Empathy Engine Active
+                    </span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-[#131125]/80 backdrop-blur-xl flex justify-around items-center h-16 z-50 px-4">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">spa</span>
+<span class="text-[10px] font-bold">Sanctuary</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[10px]">Journals</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-[10px]">Insights</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px]">Settings</span>
+</a>
+</nav>
+<!-- Subtle Decorative Elements -->
+<div class="fixed bottom-10 right-10 z-0 opacity-20 pointer-events-none">
+<div class="w-64 h-64 border border-primary-container/30 rounded-full animate-pulse"></div>
+</div>
+</body></html>
