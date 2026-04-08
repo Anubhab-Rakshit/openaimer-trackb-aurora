@@ -27,7 +27,12 @@ export const WellnessState = Annotation.Root({
     camaNodes: Annotation<MemoryNode[]>({ reducer: lastValue<MemoryNode[]>(), default: () => [] }),
     camaConsole: Annotation<CAMAConsole>({
         reducer: lastValue<CAMAConsole>(),
-        default: () => ({ core_beliefs: [], recurring_patterns: [], identity_facts: [] }),
+        default: () => ({ 
+            total_turns: 0, 
+            average_distress: 0, 
+            primary_needs: [], 
+            last_updated: new Date().toISOString() 
+        }),
     }),
     zepFacts: Annotation<ZepFact[]>({ reducer: lastValue<ZepFact[]>(), default: () => [] }),
     zepSummary: Annotation<string>({ reducer: lastValue<string>(), default: () => "" }),

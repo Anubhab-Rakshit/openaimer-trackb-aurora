@@ -28,10 +28,11 @@ export class ZepMemoryAdapter implements MemoryProvider {
 
   async health() {
     try {
-      await zepEnsureSession("health-check");
+      // Use a shorter specific check or just catch 404s
+      await zepGetContext("health-check", ""); 
       return { healthy: true };
     } catch (err) {
-      return { healthy: false, reason: String(err) };
+      return { healthy: false, reason: "Zep connection failed" };
     }
   }
 }

@@ -4,16 +4,32 @@ import type { ZepFact } from "../types";
 
 const zep = new ZepClient({ apiKey: config.zepApiKey });
 
-export async function ensureSession(userId: string): Promise<void> {
+let isZepGloballyDisabled = false;
+
+/**
+ * Helper to wrap Zep calls. If it fails once (especially with a 404),
+ * we disable Zep globally for this session to stop log spam and slowness.
+ */
+async function wrapZep<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
+    if (isZepGloballyDisabled) return fallback;
     try {
-        // Step 1: Force User creation, silently ignore if they already exist
+        return await operation();
+    } catch (err: any) {
+        // If it's a 404 or connection error, disable globally
+        const isNotFoundError = err.message?.includes("404") || err.statusCode === 404;
+        if (isNotFoundError || err.message?.includes("fetch")) {
+            isZepGloballyDisabled = true;
+        }
+        return fallback;
+    }
+}
+
+export async function ensureSession(userId: string): Promise<void> {
+    await wrapZep(async () => {
         try {
             await zep.user.add({ userId });
-        } catch (e) {
-            // Ignore: user exists or minor network blip
-        }
+        } catch {}
 
-        // Step 2: Try to get the session, or create it if it doesn't exist
         try {
             await zep.memory.getSession(userId);
         } catch {
@@ -23,11 +39,7 @@ export async function ensureSession(userId: string): Promise<void> {
                 metadata: { created_at: new Date().toISOString() },
             });
         }
-    } catch (err: any) {
-        // CATCH-ALL: Prevents the bot from crashing!
-        // If Zep totally fails, we log it and proceed using CAMA memory only.
-        console.warn(`[Zep Warning] Could not ensure session for ${userId}:`, err.message);
-    }
+    }, undefined);
 }
 
 export async function addTurn(
@@ -35,23 +47,21 @@ export async function addTurn(
     userMessage: string,
     aiResponse: string
 ): Promise<void> {
-    try {
+    await wrapZep(async () => {
         await zep.memory.add(userId, {
             messages: [
                 { role: "user", roleType: "user", content: userMessage },
                 { role: "assistant", roleType: "assistant", content: aiResponse },
             ],
         });
-    } catch (err) {
-        console.error("[Zep] addTurn error:", err);
-    }
+    }, undefined);
 }
 
 export async function getContext(
     userId: string,
     query: string
 ): Promise<{ facts: ZepFact[]; summary: string }> {
-    try {
+    return wrapZep(async () => {
         const results = await zep.memory.searchSessions({
             userId,
             text: query,
@@ -65,24 +75,18 @@ export async function getContext(
             invalid_at: r.invalid_at,
         }));
 
-        // Also get the memory summary for this session
         let summary = "";
         try {
             const mem = await zep.memory.get(userId);
             summary = mem.summary?.content ?? "";
-        } catch {
-            // No summary yet — that's fine
-        }
+        } catch {}
 
         return { facts, summary };
-    } catch (err) {
-        console.error("[Zep] getContext error:", err);
-        return { facts: [], summary: "" };
-    }
+    }, { facts: [], summary: "" });
 }
 
 export async function getUserFacts(userId: string): Promise<ZepFact[]> {
-    try {
+    return wrapZep(async () => {
         const facts = await zep.user.getFacts(userId);
         return (facts.facts ?? []).map((f: any) => ({
             fact: f.fact,
@@ -90,7 +94,5 @@ export async function getUserFacts(userId: string): Promise<ZepFact[]> {
             valid_at: f.valid_at,
             invalid_at: f.invalid_at,
         }));
-    } catch {
-        return [];
-    }
+    }, []);
 }

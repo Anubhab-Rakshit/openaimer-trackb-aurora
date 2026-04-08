@@ -1,36 +1,11 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { config } from "../config";
 import type { RouterOutput } from "../types";
 
-const genAI = new GoogleGenerativeAI(config.geminiApiKey);
+const groq = new Groq({ apiKey: config.groqApiKey });
 
-const ROUTER_SCHEMA = {
-    type: SchemaType.OBJECT,
-    properties: {
-        crisis_level: { type: SchemaType.INTEGER, description: "0=none, 5=imminent danger" },
-        crisis_flags: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-        emotion: {
-            type: SchemaType.OBJECT,
-            properties: {
-                primary: { type: SchemaType.STRING },
-                secondary: { type: SchemaType.STRING },
-                intensity: { type: SchemaType.NUMBER },
-                trajectory: { type: SchemaType.STRING },
-            },
-            required: ["primary", "secondary", "intensity", "trajectory"],
-        },
-        implicit_need: { type: SchemaType.STRING },
-        sarcasm_detected: { type: SchemaType.BOOLEAN },
-        volatility_score: { type: SchemaType.NUMBER },
-        semantic_memory_tags: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-        episodic_memory_extract: { type: SchemaType.STRING },
-    },
-    required: [
-        "crisis_level", "crisis_flags", "emotion", "implicit_need",
-        "sarcasm_detected", "volatility_score", "semantic_memory_tags", "episodic_memory_extract",
-    ],
-};
-
+// Fallback Groq-based router (no structured JSON schema, we parse manually)
+// Using Groq because it's fast (<1s), reliable, and free tier works well
 const ROUTER_SYSTEM_PROMPT = `You are an expert clinical psychologist performing real-time signal detection on a user message.
 
 Analyze the message for:
@@ -41,52 +16,71 @@ Analyze the message for:
 5. Volatility — how quickly the emotional state could shift
 
 Be thorough. The implicit_need is the most important field — detect what is UNSTATED.
-Respond ONLY with valid JSON matching the schema.`;
+Respond ONLY with a valid JSON object with these exact fields:
+{
+  "crisis_level": 0,
+  "crisis_flags": [],
+  "emotion": { "primary": "string", "secondary": "string", "intensity": 0.0, "trajectory": "stable" },
+  "implicit_need": "string",
+  "sarcasm_detected": false,
+  "volatility_score": 0.0,
+  "semantic_memory_tags": [],
+  "episodic_memory_extract": "string"
+}`;
+
+const SAFE_FALLBACK: RouterOutput = {
+    crisis_level: 0,
+    crisis_flags: [],
+    emotion: { primary: "unknown", secondary: "unknown", intensity: 0.5, trajectory: "stable" },
+    implicit_need: "unknown",
+    sarcasm_detected: false,
+    volatility_score: 0.3,
+    semantic_memory_tags: [],
+    episodic_memory_extract: "",
+};
 
 export async function runRouterLLM(
     userMessage: string,
     conversationHistory: Array<{ role: string; content: string }>
 ): Promise<RouterOutput> {
-    const model = genAI.getGenerativeModel({
-        model: config.routerModel,
-        systemInstruction: ROUTER_SYSTEM_PROMPT,
-        generationConfig: {
-            responseMimeType: "application/json",
-            responseSchema: ROUTER_SCHEMA as any,
-            temperature: 0.1, // Low temp for consistent analysis
-        },
-    });
-
     const historyContext =
         conversationHistory.length > 0
             ? `\n\nConversation history:\n${conversationHistory
-                .slice(-6) // last 3 turns
+                .slice(-6)
                 .map((t) => `${t.role}: ${t.content}`)
                 .join("\n")}`
             : "";
 
     const prompt = `${historyContext}\n\nCurrent user message to analyze:\n"${userMessage}"`;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
     try {
+        const result = await groq.chat.completions.create({
+            model: config.groqModel, // llama-3.1-8b-instant by default — very fast
+            messages: [
+                { role: "system", content: ROUTER_SYSTEM_PROMPT },
+                { role: "user", content: prompt },
+            ],
+            temperature: 0.1,
+            max_tokens: 400,
+            response_format: { type: "json_object" },
+        });
+
+        const text = result.choices[0]?.message?.content ?? "{}";
         const parsed = JSON.parse(text) as RouterOutput;
-        // Clamp crisis_level to valid range
-        parsed.crisis_level = Math.max(0, Math.min(5, parsed.crisis_level)) as RouterOutput["crisis_level"];
+
+        // Validate and clamp
+        parsed.crisis_level = Math.max(0, Math.min(5, parsed.crisis_level ?? 0)) as RouterOutput["crisis_level"];
+        parsed.emotion ??= SAFE_FALLBACK.emotion;
+        parsed.implicit_need ??= "unknown";
+        parsed.crisis_flags ??= [];
+        parsed.semantic_memory_tags ??= [];
+        parsed.sarcasm_detected ??= false;
+        parsed.volatility_score ??= 0.3;
+        parsed.episodic_memory_extract ??= userMessage.slice(0, 100);
+
         return parsed;
-    } catch {
-        console.error("[RouterLLM] Failed to parse response:", text);
-        // Safe fallback
-        return {
-            crisis_level: 0,
-            crisis_flags: [],
-            emotion: { primary: "unknown", secondary: "unknown", intensity: 0.5, trajectory: "stable" },
-            implicit_need: "unknown",
-            sarcasm_detected: false,
-            volatility_score: 0.3,
-            semantic_memory_tags: [],
-            episodic_memory_extract: userMessage.slice(0, 100),
-        };
+    } catch (err) {
+        console.error("[RouterLLM] Groq fallback failed:", err);
+        return { ...SAFE_FALLBACK, episodic_memory_extract: userMessage.slice(0, 100) };
     }
 }

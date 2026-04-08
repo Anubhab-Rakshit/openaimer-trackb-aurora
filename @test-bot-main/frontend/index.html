@@ -3,82 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wellness AI — Track B</title>
-  <meta name="description" content="A emotionally-aware AI companion that listens between the lines." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+  <title>Emotional Context Engine - OpenAimer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Animated background -->
-  <div class="bg-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
 
   <!-- Setup Modal -->
   <div id="setup-modal" class="modal-overlay">
     <div class="modal-card">
-      <div class="modal-logo">🧠</div>
-      <h1 class="modal-title">Wellness AI</h1>
-      <p class="modal-subtitle">An emotionally-aware presence that listens between the lines.</p>
-      <div class="form-group">
-        <label for="name-input">What should I call you?</label>
-        <input type="text" id="name-input" placeholder="Your first name..." autocomplete="off" />
-      </div>
-      <button id="start-btn" class="btn-primary">Begin conversation</button>
-      <p class="disclaimer">⚠️ This is an AI, not a therapist. In a crisis, call iCall: <strong>9152987821</strong></p>
+      <div class="orb modal-orb"></div>
+      <h2 class="modal-title">Initialize Sanctuary</h2>
+      <p class="modal-subtitle">Establish a secure emotional context baseline.</p>
+      <input type="text" id="name-input" class="form-input" placeholder="Preferred Name or Alias" autocomplete="off" />
+      <button id="start-btn" class="glow-bg">Connect Sequence</button>
     </div>
   </div>
 
-  <!-- Main App -->
-  <div id="app" class="app hidden">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-left">
-        <div class="status-dot" id="status-dot"></div>
-        <span class="header-title">Wellness AI</span>
-      </div>
-      <div class="header-right">
-        <div id="emotion-badge" class="emotion-badge hidden">
-          <span id="emotion-icon">💭</span>
-          <span id="emotion-label">Listening...</span>
+  <div id="app" class="hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="brand-av">
+            <div class="brand-av-inner"></div>
+          </div>
+          <div class="brand-text">
+            <span>OA</span>
+            <small>OpenAimer</small>
+          </div>
         </div>
       </div>
-    </header>
 
-    <!-- Crisis Banner -->
-    <div id="crisis-banner" class="crisis-banner hidden">
-      <span>🆘</span>
-      <span>If you're in crisis, please call iCall: <strong>9152987821</strong> or reach a trusted person now.</span>
-      <button onclick="document.getElementById('crisis-banner').classList.add('hidden')">✕</button>
-    </div>
+      <div class="sidebar-main">
+        <div class="section">
+          <div class="section-title">GRAPH ENGINE</div>
+          <div class="status-indicator">
+            <span class="dot" id="status-dot"></span>
+            <span id="status-text">Connecting...</span>
+          </div>
+          
+          <div class="orb-container">
+            <div class="orb-glow"></div>
+            <div class="orb" id="main-orb"></div>
+            <div class="orb-ring"></div>
+          </div>
 
-    <!-- Chat Area -->
-    <main id="chat-area" class="chat-area">
-      <div id="messages" class="messages"></div>
-    </main>
+          <div class="cog-readout">
+            <div class="cog-title">COGNITIVE LOAD</div>
+            <div class="cog-val" id="cog-status">STANDBY</div>
+          </div>
+        </div>
 
-    <!-- Input Area -->
-    <footer class="input-area">
-      <div class="input-wrapper">
-        <textarea
-          id="message-input"
-          placeholder="Share what's on your mind..."
-          rows="1"
-          autocomplete="off"
-        ></textarea>
-        <button id="send-btn" class="send-btn" aria-label="Send message">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
+        <div class="spacer"></div>
+
+        <div class="section">
+          <div class="section-title">SIGNAL ANALYSIS</div>
+          
+          <div id="emotion-empty" class="empty-signal">
+            Awaiting first signal...
+          </div>
+          
+          <div id="emotion-panel" class="signal-panel hidden">
+            <div class="sig-row"><span>Primary Signal</span><span id="sig-emotion">—</span></div>
+            <div class="sig-row"><span>Implicit Need</span><span id="sig-need">—</span></div>
+            <div class="sig-row">
+              <span>Volatility</span>
+              <div class="bar-bg"><div class="bar-fg" id="sig-bar"></div></div>
+            </div>
+            <div class="sig-row"><span>Masking</span><span id="sig-mask">—</span></div>
+          </div>
+        </div>
+
+        <div class="nav-menu">
+          <div class="nav-item active">
+            <span class="nav-icon purple"></span>
+            Sanctuary
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon grey">≡</span>
+            Journals
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon grey">📊</span>
+            Insights
+          </div>
+        </div>
       </div>
-      <p class="input-hint">Not a substitute for professional help. AI can make mistakes.</p>
-    </footer>
+
+      <div class="sidebar-bottom">
+        <div class="user-chip" id="user-chip">
+          <div class="user-avatar">U</div>
+          <span id="user-display">You</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Chat View -->
+    <main class="chat-view">
+      <header class="chat-header">
+        <div class="header-titles">
+          <h1>Emotional Context Engine</h1>
+          <p>Multi-stage cognitive routing • Active</p>
+        </div>
+        <div class="header-badges">
+          <div class="badge"><span class="dot green"></span> LangGraph Pipeline</div>
+          <div class="badge"><span class="dot orange"></span> Groq · Llama3</div>
+        </div>
+      </header>
+
+      <div class="crisis-banner hidden" id="crisis-banner">
+        <span>High volatility detected. Activating clinical safety guardrails.</span>
+      </div>
+
+      <div class="chat-wrapper" id="chat-area">
+        <div class="messages-container" id="messages">
+          <!-- Messages here -->
+        </div>
+      </div>
+
+      <div class="input-region">
+        <div class="input-pill">
+          <textarea id="message-input" rows="1" placeholder="Share what's on your mind..."></textarea>
+          <button id="send-btn" class="send-action">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="input-footer">
+          <span>Shift+Enter for new line • Enter to send</span>
+          <span>🔒 Private session</span>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script src="app.js"></script>

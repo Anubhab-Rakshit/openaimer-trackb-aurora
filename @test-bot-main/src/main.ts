@@ -23,8 +23,8 @@ app.get("/health", (_req, res) => {
     res.json({ status: "ok", model: config.groqModel, env: config.nodeEnv });
 });
 
-// Serve frontend (from user's React frontend)
-const frontendPath = path.join(__dirname, "../../frontend/dist");
+// Serve frontend (from test-bot-main/frontend directly)
+const frontendPath = path.join(__dirname, "../frontend");
 app.use(express.static(frontendPath));
 app.get("*", (_req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));

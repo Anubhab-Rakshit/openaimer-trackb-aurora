@@ -27,16 +27,23 @@ export interface RouterOutput {
 
 // CAMA Memory types
 export interface MemoryNode {
+    id: string;
     content: string;
-    emotion_tags: string[];
+    terms: string[];
+    emotion_tags?: string[];
     timestamp: number;
-    salience: number;
+    salience?: number;
+    distress: number;
 }
 
 export interface CAMAConsole {
-    core_beliefs: string[];
-    recurring_patterns: string[];
-    identity_facts: string[];
+    total_turns: number;
+    average_distress: number;
+    primary_needs: string[];
+    last_updated: string;
+    core_beliefs?: string[];
+    recurring_patterns?: string[];
+    identity_facts?: string[];
 }
 
 // EmoGuard types

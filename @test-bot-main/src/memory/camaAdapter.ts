@@ -5,7 +5,7 @@ export class CAMAMemoryAdapter implements MemoryProvider {
   async fetchContext({ userId, limit = 5 }: { userId: string; limit?: number }) {
     const cama = new CAMAMemory(userId);
     await cama.load();
-    const ring = cama.recall([], limit); // fetch all (no emotion filter)
+    const ring = cama.getRing().slice(0, limit); // fetch limited nodes
     const consoleFacts = cama.getConsole();
     return { camaNodes: ring, camaConsole: consoleFacts };
   }

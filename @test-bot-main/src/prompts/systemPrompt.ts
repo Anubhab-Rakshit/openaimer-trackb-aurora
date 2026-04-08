@@ -65,7 +65,12 @@ ${formatZepFacts(zepFacts)}
 ${formatCAMAMemory(camaNodes)}
 
 ━━━ RECURRING PATTERNS ━━━
-${formatRecurringPatterns(camaConsole.recurring_patterns)}
+${formatRecurringPatterns(camaConsole.recurring_patterns || [])}
+
+━━━ COGNITIVE CONSOLE ━━━
+• Memory Depth: ${camaConsole.total_turns} interactions
+• Average Distress: ${camaConsole.average_distress.toFixed(2)}
+• Last Signal Update: ${camaConsole.last_updated}
 
 ━━━ CURRENT SIGNAL ANALYSIS ━━━
 • Primary emotion: ${emotionDesc}${secondaryEmotion}
